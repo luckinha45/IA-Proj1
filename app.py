@@ -2,21 +2,77 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import math
 
-def calc_dist(x1:float, y1:float, x2:float, y2:float) -> int:
-	return math.sqrt(pow(x1-x2, 2) + pow(y1-y2, 2))
+class Point:
+	def __init__(self, x, y):
+		self.x = x
+		self.y = y
+		self.custo = 0
+
+class Edge:
+	def __init__(self, p1:Point, p2:Point, dist:float):
+		self.p1 = p1
+		self.p2 = p2
+		self.dist = dist
+
+"""
+Point:
+	0: x,
+	1: y,
+	2: custo pra prox passo
+
+Edge:
+	0: p1,
+	1: p2,
+	2: distancia dos pontos
+"""
 
 loaded = nx.read_graphml('./teste1.graphml')
 graph = nx.Graph()
 points = {}
-edges = []
+edges:list[Edge] = []
+
+def get_vizinhos(point):
+	
+
+def A_star(start_point, end_point):
+	""" 
+	adiciona start no visited
+	act = start
+	while True:
+		se act == end: achado, para exescução
+		colocar vizinhos do
+	"""
+	visited = [] # lista de nós ja visitados
+	border = [] # lista de nós na fila de serem visitados
+	
+	visited.append(start_point)
+
+	act_point = start_point
+	act_point[2] = 0 + calc_dist(act_point[0], act_point[1], end_point[0], end_point[1])
+	while True:
+		if act_point == end_point: break
+
+		# pega e calcula fn de vizinhos de act
+		vizinhos = []
+		for eg in edges:
+			if eg.
+
+		hn = calc_dist(act_point[0], act_point[1], end_point[0], end_point[1])
+
+		fn = hn
+
+
+def calc_dist(x1:float, y1:float, x2:float, y2:float) -> int:
+	return math.sqrt(pow(x1-x2, 2) + pow(y1-y2, 2))
+
 
 #region extaindo dados
 for nd in list(loaded.nodes):
-	points[nd] = (float(loaded.nodes[nd]['x']), -float(loaded.nodes[nd]['y']))
+	points[nd] = Point(float(loaded.nodes[nd]['x']), -float(loaded.nodes[nd]['y']))
 
-for n1, n2, data in list(loaded.edges):
-	dist = str(calc_dist(points[n1][0], points[n1][1], points[n2][0], points[n2][1]))
-	edges.append((n1, n2, dist))
+for p1, p2, data in list(loaded.edges):
+	dist = calc_dist(points[p1].x, points[p1].y, points[p2].x, points[p2].y)
+	edges.append(Edge(p1, p2, dist))
 
 #endregion
 
@@ -43,7 +99,3 @@ nx.draw_networkx_labels(graph, pos=pos)
 # nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
 nx.draw(graph)
 plt.show()
-
-# for nd in list(loaded.nodes):
-# 	loaded.nodes[nd]['label'] = nd
-# 	print(loaded.nodes[nd])
